@@ -22,22 +22,22 @@ Web Programming with Python and JavaScript
     - [x] **A password**
 * [x] **BUILD A REGISTRATION PAGE**
 * [x] **CREATE A BOOKS TABLE CONTAINING**
-    - **[x] AN id**
-    - **[x] A TITLE**
-    - **[x] THE AUTHOR**
-    - **[x] THE PUBLICATION YEAR**
-    - **[x] THE ISBN NUMBER**
-    - **[x] THE REVIEW COUNT**
-    - **[x] THE AVERAGE SCORE**
+    - [x] **AN id**
+    - [x] **A TITLE**
+    - [x] **THE AUTHOR**
+    - [x] **THE PUBLICATION YEAR**
+    - [x] **THE ISBN NUMBER**
+    - [x] **THE REVIEW COUNT**
+    - [x] **THE AVERAGE SCORE**
 * [ ] > IMPORT books.csv INTO THE DATABASE VIA AN import.py FILE
 * [ ] BUILD A BASE PAGE WITH A NAVBAR CONTAINING A SEARCH PAGE LINK AND A LOGOUT OPTION
 * [ ] BUILD A SEARCH PAGE WHICH SEARCHES BOOKS BY ISBN, AUTHOR NAME, OR TITLE
-* **[x] CREATE A REVIEW TABLE CONTAINING**
-    - **[x] AN id**
-    - **[x] A SCORE**
-    - **[x] A TEXT REVIEW**
-    - **[x] A RELATION TO THE USER_ID**
-    - **[x] A RELATION TO THE BOOK**
+* [x] **CREATE A REVIEW TABLE CONTAINING**
+    - [x] **AN id**
+    - [x] **A SCORE**
+    - [x] **A TEXT REVIEW**
+    - [x] **A RELATION TO THE USER_ID**
+    - [x] **A RELATION TO THE BOOK**
 * [ ] BUILD A BOOK PAGE ON WHICH A REVIEW CAN BE SUBMITTED CONTAINING
     - [ ] A RATING SCALE FROM 1 TO 5
     - [ ] A TEXT COMPONENT FOR AN OPINION
