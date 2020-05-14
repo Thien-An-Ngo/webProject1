@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-4.5.0-dist/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+  <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+  {% block nav %}
+  {% endblock %}
+    <!-- <nav class="navbar navbar-dark bg-dark">
+        <div class="p-1">
+            <a href="{{ url_for('index') }}" class="navbar-brand">Navbar</a>
+            <a href="" class="navbar-link btn btn-dark">hurz</a>
+        </div>
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+    </nav> -->
+  <div class="m-3 mt-0 p-2">
+
+    {% block body %}{% endblock %}
+
+  </div>
+
+    {% if error %}
+        <div class="alert alert-danger mt-5">
+            <h5 class="text-danger">{{error}}</h5>
+        </div>
+    {% endif %}
+    <script src="{{ url_for('static', filename='bootstrap-4.5.0-dist/js/jquery/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap-4.5.0-dist/js/popper/popper.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='bootstrap-4.5.0-dist/js/bootstrap/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='bootstrap-4.5.0-dist/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
+</body>
+
+</html>

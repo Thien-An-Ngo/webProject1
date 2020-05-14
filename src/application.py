@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, session, render_template, request, redirect
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -24,7 +24,7 @@ def index():
     if "username" in session:
         return render_template("index.html")
     return redirect("/login")
-    
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     error = ""
@@ -63,7 +63,8 @@ def register():
             print(password1)
             print(error)
         if error == "":
-            db.execute("insert into users (username, passwd) values (:username, :password)", {"username": username, "password": password0})
+            db.execute("insert into users (username, passwd) values (:username, :password)",
+                                        {"username": username, "password": password0})
             db.commit()
             print(f"Hallo {error}")
             return redirect("/login")
