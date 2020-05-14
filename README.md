@@ -13,7 +13,7 @@ Web Programming with Python and JavaScript
 * [x] **SET UP A heroku DATABASE**
 * [x] **SET UP THE FLASK SERVER CONNECTED TO THE HEROKU DATABASE**
 * [x] **BUILD A BASIC PAGE WITH A LOGIN AND AN OPTION TO REGISTER**
-* [] CREATE A USERS TABLE CONTAINING
+* [O] CREATE A USERS TABLE CONTAINING
     - [ ] AN id 
     - [ ] A username 
     - [ ] A password
