@@ -1,0 +1,18 @@
+.fc {
+  color: #17a2b8;
+}
+
+.h1 {
+  color: #3F3B3D;
+}
+
+.lc {
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: white;
+  color: #007bff;
+}
+
+/*# sourceMappingURL=main.css.map */

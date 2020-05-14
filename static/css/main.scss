@@ -1,0 +1,21 @@
+$btnFontColor : #17a2b8;
+$h1c : #3F3B3D;
+$lc : white;
+$primary: #007bff; 
+
+.fc {
+  color: $btnFontColor;
+}
+
+.h1 {
+  color: $h1c;
+}
+
+.lc {
+  color: $lc;
+}
+
+.btn-primary:hover {
+  background-color: $lc;
+  color: $primary;
+}
