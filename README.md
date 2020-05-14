@@ -13,28 +13,28 @@ Web Programming with Python and JavaScript
 * [x] **SET UP A heroku DATABASE**
 * [x] **SET UP THE FLASK SERVER CONNECTED TO THE HEROKU DATABASE**
 * [x] **BUILD A BASIC PAGE WITH A LOGIN AND AN OPTION TO REGISTER**
-* [ ] > CREATE A USERS TABLE CONTAINING
-    - [ ] AN id 
-    - [ ] A username 
-    - [ ] A password
+* [x] **CREATE A USERS TABLE CONTAINING**
+    - [x] **AN id** 
+    - [x] **A username** 
+    - [x] **A password**
 * [x] **BUILD A REGISTRATION PAGE**
-* [ ] CREATE A BOOKS TABLE CONTAINING
-    - [ ] AN id 
-    - [ ] A TITLE
-    - [ ] THE AUTHOR
-    - [ ] THE PUBLICATION YEAR
-    - [ ] THE ISBN NUMBER
-    - [ ] THE REVIEW COUNT
-    - [ ] THE AVERAGE SCORE
-* [ ] IMPORT books.csv INTO THE DATABASE VIA AN import.py FILE
+* [x] **CREATE A BOOKS TABLE CONTAINING**
+    - **[x] AN id**
+    - **[x] A TITLE**
+    - **[x] THE AUTHOR**
+    - **[x] THE PUBLICATION YEAR**
+    - **[x] THE ISBN NUMBER**
+    - **[x] THE REVIEW COUNT**
+    - **[x] THE AVERAGE SCORE**
+* [ ] > IMPORT books.csv INTO THE DATABASE VIA AN import.py FILE
 * [ ] BUILD A BASE PAGE WITH A NAVBAR CONTAINING A SEARCH PAGE LINK AND A LOGOUT OPTION
 * [ ] BUILD A SEARCH PAGE WHICH SEARCHES BOOKS BY ISBN, AUTHOR NAME, OR TITLE
-* [ ] CREATE A REVIEW TABLE CONTAINING
-    - [ ] AN id
-    - [ ] A SCORE
-    - [ ] A TEXT REVIEW
-    - [ ] A RELATION TO THE USER_ID
-    - [ ] A RELATION TO THE BOOK
+* **[x] CREATE A REVIEW TABLE CONTAINING**
+    - **[x] AN id**
+    - **[x] A SCORE**
+    - **[x] A TEXT REVIEW**
+    - **[x] A RELATION TO THE USER_ID**
+    - **[x] A RELATION TO THE BOOK**
 * [ ] BUILD A BOOK PAGE ON WHICH A REVIEW CAN BE SUBMITTED CONTAINING
     - [ ] A RATING SCALE FROM 1 TO 5
     - [ ] A TEXT COMPONENT FOR AN OPINION
