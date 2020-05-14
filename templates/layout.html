@@ -27,6 +27,12 @@
     {% block body %}{% endblock %}
 
   </div>
+
+    {% if error %}
+        <div class="alert alert-danger mt-5">
+            <h5 class="text-danger">{{error}}</h5>
+        </div>
+    {% endif %}
   <script src="/src/static/bootstrap-4.5.0-dist/js/bootstrap/bootstrap.bundle.js"></script>
   <script src="/src/static/bootstrap-4.5.0-dist/js/bootstrap/bootstrap.min.js"></script>
   <script src="/src/static/bootstrap-4.5.0-dist/js/jquery/jquery-3.2.1.min.js"></script>

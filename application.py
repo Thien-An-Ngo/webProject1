@@ -1,7 +1,6 @@
 import os
 
 from flask import Flask, session, render_template, request, redirect, url_for
-from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -15,7 +14,6 @@ if not os.getenv("DATABASE_URL"):
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SECRET_KEY"] = "123456789abcdefghi"
-Session(app)
 
 # Set up database
 engine = create_engine(os.getenv("DATABASE_URL"))
@@ -23,25 +21,27 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-    if session["user"] == None:
-        return redirect("/login")
-    else:
+    if "username" in session:
         return render_template("index.html")
+    return redirect("/login")
     
-@app.route("/login", methods=["GET","POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     error = ""
+    username = ""
+    password = ""
     if request.method == "GET":
         return render_template("login.html")
     if request.method == "POST":
-        user = request.form.get("username")
+        username = request.form.get("username")
         password = request.form.get("password")
-        checkPassword = db.execute("SELECT passwd FROM users WHERE username == :user", {"user": user}).fetchone()
-        if not checkPassword or checkPassword != password:
+        print(f"{username} / {password}")
+        if db.execute("SELECT * FROM users WHERE username=:username AND passwd=:password",
+                    {"username": username, "password": password}).rowcount == 0:
             error = "Username or Password is incorrect."
             return render_template("login.html", error=error)
         else:
-            session["user"] = user
+            session["username"] = username
             return redirect("/")
 
 @app.route("/register", methods=["GET", "POST"])

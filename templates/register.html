@@ -6,6 +6,11 @@
 
 {% block body %}
     <h1 class="mb-5">Register</h1>
+    {% if error %}
+        <div class="alert alert-danger mt-5">
+            <h5 class="text-danger">{{error}}</h5>
+        </div>
+    {% endif %}
     <div>
         <form action="{{ url_for('register') }}" method="POST">
             <div class="form-group">
