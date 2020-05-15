@@ -5,13 +5,16 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="mb-5">Register</h1>
+<div class="card text-white bg-info mb-3">
+    <div class="card-header" style="margin-bottom: 0px;">
+        <h1 class="mb-2">Register</h1>
+    </div>
     {% if error %}
-        <div class="alert alert-danger mt-5">
-            <h5 class="text-danger">{{error}}</h5>
-        </div>
+    <div class="alert alert-danger ml-3 mr-3 mt-2">
+        <h5 class="text-danger">{{error}}</h5>
+    </div>
     {% endif %}
-    <div>
+    <div class="card-body">
         <form action="{{ url_for('register') }}" method="POST">
             <div class="form-group">
                 <label for="username" class="font-weight-bold">Username:</label>
@@ -25,7 +28,11 @@
                 <label for="password1" class="font-weight-bold">Retype Password:</label>
                 <input name="passwordRepeat" type="password" class="form-control" id="password1" placeholder="Password">
             </div>
-            <button class="btn btn-primary">Register</button>
+            <div class="mt-4">
+                <button class="btn btn-primary">Register</button>
+                <a href="{{ url_for('login') }}" class="btn btn-secondary ml-4">Back to Log In</a>
+            </div>
         </form>
     </div>
+</div>
 {% endblock %}
