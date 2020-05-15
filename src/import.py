@@ -3,7 +3,10 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from pathlib import Path
+<<<<<<< HEAD
 
+=======
+>>>>>>> f9cdb1ed94b3535104bec38f0784f6aa4f48db35
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
@@ -15,12 +18,20 @@ def main():
     b = Path(__file__).parent.joinpath('books.csv').open()
     reader = csv.reader(b)
 
+<<<<<<< HEAD
     """ for isbn, title, author, year in reader:
         print(f"{isbn} {title} {author} {year}") """
 
     for isbn, title, author, year in reader:
         if isbn != "isbn" and year != "year":
             db.execute("INSERT INTO books (isbn, title, author, year) VALUES (:isbn, :title, :author, :year)",
+=======
+    for isbn, title, author, year in reader:
+        print(f"{isbn} {title} {author} {year}")
+
+    for isbn, title, author, year in reader:
+        db.execute("INSERT INTO books (isbn, title, author, publication_year) VALUES (:isbn, :title, :author, :year)",
+>>>>>>> f9cdb1ed94b3535104bec38f0784f6aa4f48db35
                    {"isbn": isbn, "title": title, "author": author, "year": year})
     db.commit()
 
