@@ -30,6 +30,18 @@ def index():
         return render_template("index.html", books=books)
     return redirect("/login")
 
+@app.route("/search", methods=["POST"])
+def search():
+    searchResults = []
+    search = request.form.get("search")
+    search = f"%{search}%"
+    results = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn LIKE :search OR title LIKE :search OR author LIKE :search",
+                    {"search": search}).fetchall()
+    for result in results:
+        resultItem = [f"{result.title}", f"{result.author}", f"{result.year}", f"{result.isbn}"]
+        searchResults.append(resultItem)
+    return render_template("index.html", books=searchResults)
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     error = ""
