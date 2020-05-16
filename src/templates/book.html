@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ book.title }}
+{% endblock %}
+
+{% block nav %}
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Metis</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" 
+            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Nav Items -->
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('index') }}">Booklist <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+            </li>
+        </ul>
+        <!-- Search -->
+        <form action="{{ url_for('search') }}" method="POST" class="form-inline my-2 my-sm-0">
+            <input name="search" class="form-control mr-sm-2" type="search" placeholder="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+{% endblock %}
+
+{% block body %}
+
+<div class="card bg-dark mb-3">
+    <div class="card-header bg-dark"><h2 class="card-title text-white display-4">{{ book.title }}</h2></div>
+    <div class="card-body text-light d-flex justify-content-around">
+      <h5 class="card-text m-2">Written by {{ book.author }}</h5>
+      <h5 class="card-text m-2">Published in {{ book.year }}</h5>
+      <p class="pt-5"></p>
+    </div>
+    <div class="card-footer bg-dark">
+        <div class="card border-secondary mb-3">
+
+            <div class="card-header border-secondary bg-dark">
+              <ul class="nav nav-tabs card-header-tabs" id="nav-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-item nav-link active" id="nav-overview-tab" data-toggle="tab" 
+                    href="#nav-overview" role="tab" aria-controls="nav-overview" aria-selected="true">Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-item nav-link" id="nav-comments-tab" data-toggle="tab" 
+                    href="#nav-comments" role="tab" aria-controls="nav-comments" aria-selected="false">Comments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-item nav-link" id="nav-rate-tab" data-toggle="tab" 
+                    href="#nav-rate" role="tab" aria-controls="nav-rate" aria-selected="false">Rate the Book</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card-body tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-overview" role="tabpanel" aria-labelledby="nav-overview-tab">
+                    {% if book.score_count %}
+                        <h2>Number of Reviews: {{ book.score_count }}</h2>
+                    {% endif %}
+                    {% if book.average_score %}
+                        <h2>Average Score: {{ book.average_score }}</h2>
+                    {% endif %}
+                    {% if book.score_count == None and book.average_score == None %}
+                        <h2 class="alert alert-danger">No Review or Rating Yet</h2>
+                    {% endif %}
+                </div>
+                <div class="tab-pane fade d-flex flex-wrap" id="nav-comments" role="tabpanel" aria-labelledby="nav-comments-tab">
+                    {% for comment in comments %}
+                        <div class="card bg-light mb-3 mx-4" style="min-width: 20rem;">
+                            <div class="card-header">
+                                <h5>{{comment.text_title}}</h5>
+                            </div>
+                            <div class="card-body">
+                            <p class="card-text">
+                                {% if comment.text_review %}
+                                    {{comment.text_review}}
+                                {% endif %}
+                            </p>
+                        </div>
+                      </div>
+                    {% endfor %}
+                </div>
+                <div class="tab-pane fade" id="nav-rate" role="tabpanel" aria-labelledby="nav-rate-tab">
+                    <form action="{{ url_for('review') }}" method="POST">
+                        <input type="hidden" name="id" value="{{id}}">
+                        <div class="container">
+                        <div class="d-flex row justify-content-center mb-3">
+                            <h1 class="mr-5 mb-0 mt-1">Your Rating:</h1>
+                            <div class="starrating risingstar d-flex justify-content-center flex-row-reverse">
+                                <input type="radio" id="star5" name="rating" value="5"/>
+                                <label for="star5" title="5 star"></label>
+                                <input type="radio" id="star4" name="rating" value="4"/>
+                                <label for="star4" title="4 star"></label>
+                                <input type="radio" id="star3" name="rating" value="3"/>
+                                <label for="star3" title="3 star"></label>
+                                <input type="radio" id="star2" name="rating" value="2"/>
+                                <label for="star2" title="2 star"></label>
+                                <input type="radio" id="star1" name="rating" value="1"/>
+                                <label for="star1" title="1 star"></label>
+                            </div>
+                        </div>
+                        <div class="mx-4 mr-5">
+                            <div class="form-group">
+                              <label for="exampleInputTitle"><h3>Title</h3></label>
+                              <input name="title" type="text" class="form-control" id="exampleInputTitle" placeholder="Enter a Title">
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputReview"><h3>Write a Review</h3></label>
+                              <input name="text" type="text" class="form-control" id="exampleInputReview" placeholder="A Short Review">
+                            </div>
+                            <button type="submit" class="btn btn-primary my-3">Post Your Review</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+          </div>
+
+    </div>
+  </div>
+
+{% endblock %}

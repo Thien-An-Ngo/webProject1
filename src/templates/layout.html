@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-4.5.0-dist/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome-4.7.0/css/font-awesome.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
 
   <title>{% block title %}{% endblock %}</title>
 </head>
@@ -28,12 +30,7 @@
     {% block body %}{% endblock %}
 
   </div>
-
-    {% if error %}
-        <div class="alert alert-danger mt-5">
-            <h5 class="text-danger">{{error}}</h5>
-        </div>
-    {% endif %}
+  
     <script src="{{ url_for('static', filename='bootstrap-4.5.0-dist/js/jquery/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap-4.5.0-dist/js/popper/popper.min.js') }}"></script>
   <script src="{{ url_for('static', filename='bootstrap-4.5.0-dist/js/bootstrap/bootstrap.min.js') }}"></script>
