@@ -22,7 +22,7 @@ CREATE TABLE books(
 
 CREATE TABLE reviews(
     id SERIAL PRIMARY KEY,
-    score FLOAT NOT NULL CHECK (score >= 1 AND score <= 5),
+    score INTEGER NOT NULL CHECK (score >= 1 AND score <= 5),
     text_review VARCHAR,
     user_id INTEGER REFERENCES users,
     book_id INTEGER REFERENCES books

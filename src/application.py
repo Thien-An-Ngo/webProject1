@@ -55,7 +55,7 @@ def review():
     if rating == None:
         error = "Please rate the book in order to post your review."
         return render_template("book.html", error=error)
-    db.execute("INSERT INTO reviews (score, text_title, text_review, user_id, book_id) VALUES (:rating, :title, :text_review, :user_id, :book_id)",
+    db.execute("INSERT INTO reviews (score, title, text_review, user_id, book_id) VALUES (:rating, :title, :text_review, :user_id, :book_id)",
             {"rating": rating, "title": title, "text_review": text_review, "user_id": user_id, "book_id": book_id,})
     db.commit()
     return redirect(f"/book/{book_id}")

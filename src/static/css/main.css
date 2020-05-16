@@ -37,5 +37,11 @@
 .starrating > input:hover ~ label
 { color: #ffca08 ;  } /* Set yellow color when star hover */
 
+.stars > label:after {
+  content: "\f005";
+  color: #ffca08 ;
+  font-size: 2em;
+  font-family: FontAwesome;
+}
 
 /*# sourceMappingURL=main.css.map */
