@@ -21,26 +21,9 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-    if "username" in session and session["username"] != None:
-        bookList = db.execute("SELECT isbn, title, author, year FROM books ORDER BY average_score DESC").fetchall()
-        books = []
-        for book in bookList:
-            bookItem = [f"{book.title}", f"{book.author}", f"{book.year}", f"{book.isbn}"]
-            books.append(bookItem)
-        return render_template("index.html", books=books)
+    if "username" in session:
+        return render_template("index.html")
     return redirect("/login")
-
-@app.route("/search", methods=["POST"])
-def search():
-    searchResults = []
-    search = request.form.get("search")
-    search = f"%{search}%"
-    results = db.execute("SELECT isbn, title, author, year FROM books WHERE isbn LIKE :search OR title LIKE :search OR author LIKE :search",
-                    {"search": search}).fetchall()
-    for result in results:
-        resultItem = [f"{result.title}", f"{result.author}", f"{result.year}", f"{result.isbn}"]
-        searchResults.append(resultItem)
-    return render_template("index.html", books=searchResults)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -57,13 +40,9 @@ def login():
                     {"username": username, "password": password}).rowcount == 0:
             error = "Username or Password is incorrect."
             return render_template("login.html", error=error)
-        session["username"] = username
-        return redirect("/")
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect("/login")
+        else:
+            session["username"] = username
+            return redirect("/")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -74,18 +53,16 @@ def register():
         username = request.form.get("username")
         password0 = request.form.get("password")
         password1 = request.form.get("passwordRepeat")
-        if db.execute("SELECT username FROM users WHERE username=:username", {"username": username}).rowcount == 1:
-            error = "Username already taken. Please select a new one."
-        elif len(username) < 3 or len(password0) < 8:
+        if len(username) < 3 or len(password0) < 8:
             error = "Either username or password length do not suffice (username has to be greater than 2 and password has to contain a minimum of 8 letters)"
             print(error)
             print("hurz")
-        elif not password0 == password1:
+        if not password0 == password1:
             error = "Passwords do not match!"
             print(password0)
             print(password1)
             print(error)
-        elif error == "":
+        if error == "":
             db.execute("insert into users (username, passwd) values (:username, :password)",
                                         {"username": username, "password": password0})
             db.commit()
