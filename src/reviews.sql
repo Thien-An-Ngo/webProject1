@@ -6,5 +6,6 @@ CREATE TABLE reviews(
     title VARCHAR,
     text_review VARCHAR,
     user_id INTEGER REFERENCES users,
-    book_id INTEGER REFERENCES books
+    book_id INTEGER REFERENCES books,
+    UNIQUE (user_id, book_id)
 );

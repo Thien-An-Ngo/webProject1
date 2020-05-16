@@ -3,6 +3,7 @@ import os
 from flask import Flask, session, render_template, request, redirect
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.exc import SQLAlchemyError
 
 app = Flask(__name__)
 
@@ -18,6 +19,8 @@ app.config["SECRET_KEY"] = "123456789abcdefghi"
 # Set up database
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
+
+error = None
 
 @app.route("/")
 def index():
@@ -38,9 +41,10 @@ def search():
 @app.route("/book/<int:id>")
 def bookPage(id=None):
     book = db.execute("SELECT * FROM books WHERE id=:id", {"id": id}).fetchone()
-    #print(f"book is {book}")
     comments = db.execute("SELECT * FROM reviews WHERE book_id=:id", {"id": id}).fetchall()
-    return render_template("book.html", book=book, comments=comments, id=id)
+    if db.execute("SELECT * FROM reviews WHERE user_id=:user_id AND book_id=:id", {"user_id": session["user_id"], "id": id}).rowcount == 1:
+        reviewError = 1
+    return render_template("book.html", book=book, comments=comments, id=id, error=error, reviewError=reviewError)
 
 @app.route("/review", methods=["POST"])
 def review():
@@ -49,15 +53,17 @@ def review():
     text_review = request.form.get("text")
     book_id = request.form.get("id")
     book_id = int(book_id)
-    user_id = db.execute("SELECT * FROM users WHERE username=:username", {"username": session["username"]}).fetchall()
-    for i in user_id:
-        user_id = i.id
+    user_id = session["user_id"]
     if rating == None:
         error = "Please rate the book in order to post your review."
-        return render_template("book.html", error=error)
-    db.execute("INSERT INTO reviews (score, title, text_review, user_id, book_id) VALUES (:rating, :title, :text_review, :user_id, :book_id)",
-            {"rating": rating, "title": title, "text_review": text_review, "user_id": user_id, "book_id": book_id,})
-    db.commit()
+        return redirect(f"/book/{book_id}")
+    try:
+        db.execute("INSERT INTO reviews (score, title, text_review, user_id, book_id) VALUES (:rating, :title, :text_review, :user_id, :book_id)",
+                {"rating": rating, "title": title, "text_review": text_review, "user_id": user_id, "book_id": book_id,})
+        db.commit()
+    except SQLAlchemyError as e:
+        error = "You have already posted a review for this book."
+        return redirect(f"/book/{book_id}")
     return redirect(f"/book/{book_id}")
 
 @app.route("/register", methods=["GET", "POST"])
@@ -103,6 +109,9 @@ def login():
                     {"username": username, "password": password}).rowcount == 0:
             error = "Username or Password is incorrect."
             return render_template("login.html", error=error)
+        user_id = db.execute("SELECT * FROM users WHERE username=:username", {"username": session["username"]}).fetchall()
+        for i in user_id:
+            session["user_id"] = i.id
         session["username"] = username
         return redirect("/")
 
