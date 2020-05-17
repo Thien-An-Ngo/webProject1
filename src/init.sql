@@ -15,15 +15,15 @@ CREATE TABLE books(
     isbn VARCHAR UNIQUE NOT NULL,
     title VARCHAR NOT NULL,
     author VARCHAR NOT NULL,
-    year INTEGER NOT NULL,
-    score_count INTEGER,
-    average_score FLOAT
+    year INTEGER NOT NULL
 );
 
 CREATE TABLE reviews(
     id SERIAL PRIMARY KEY,
-    score INTEGER NOT NULL CHECK (score >= 1 AND score <= 5),
+    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    title VARCHAR,
     text_review VARCHAR,
     user_id INTEGER REFERENCES users,
-    book_id INTEGER REFERENCES books
+    book_id INTEGER REFERENCES books,
+    UNIQUE (user_id, book_id)
 );

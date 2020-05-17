@@ -53,7 +53,7 @@
                     <a class="nav-item nav-link" id="nav-comments-tab" data-toggle="tab" 
                     href="#nav-comments" role="tab" aria-controls="nav-comments" aria-selected="false">Comments</a>
                 </li>
-                {% if not reviewError %}
+                {% if not hasReviewed %}
                 <li class="nav-item">
                     <a class="nav-item nav-link" id="nav-rate-tab" data-toggle="tab" 
                     href="#nav-rate" role="tab" aria-controls="nav-rate" aria-selected="false">Rate the Book</a>
@@ -67,14 +67,14 @@
                     {% if error %}
                         <h2 class="alert alert-danger">{{error}}</h2>
                     {% endif %}
-                    {% if book.score_count %}
-                        <h2>Number of Reviews: {{ book.score_count }}</h2>
+                    {% if rating_count %}
+                        <h2>Number of Ratings: {{ rating_count }}</h2>
                     {% endif %}
-                    {% if book.average_score %}
-                        <h2>Average Score: {{ book.average_score }}</h2>
+                    {% if average_score %}
+                        <h2>Average Rating: {{ average_score }}</h2>
                     {% endif %}
-                    {% if book.score_count == None and book.average_score == None %}
-                        <h2 class="alert alert-danger">No Review or Rating Yet</h2>
+                    {% if rating_count == None and average_score == None %}
+                        <h2 class="alert alert-danger">No Rating Yet</h2>
                     {% endif %}
                 </div>
                 <div class="tab-pane fade" id="nav-comments" role="tabpanel" aria-labelledby="nav-comments-tab">
@@ -99,12 +99,12 @@
                                         {{comment.text_review}}
                                     {% endif %}
                                 </p>
+                                </div>
                             </div>
+                        {% endfor %}
                     </div>
-                      </div>
-                    {% endfor %}
                 </div>
-                {% if not reviewError %}
+                {% if not hasReviewed %}
                 <div class="tab-pane fade" id="nav-rate" role="tabpanel" aria-labelledby="nav-rate-tab">
                     <form action="{{ url_for('review') }}" method="POST">
                         <input type="hidden" name="id" value="{{id}}">

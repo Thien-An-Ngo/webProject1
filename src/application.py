@@ -1,6 +1,7 @@
 import os
+import requests
 
-from flask import Flask, session, render_template, request, redirect
+from flask import Flask, session, render_template, request, redirect, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
@@ -21,11 +22,12 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 error = None
+key = "qK70VNE35zrRo69bTbV5Q"
 
 @app.route("/")
 def index():
     if "username" in session and session["username"] != None:
-        bookList = db.execute("SELECT * FROM books ORDER BY average_score DESC").fetchall()
+        bookList = db.execute("SELECT * FROM books ORDER BY id ASC").fetchall()
         return render_template("index.html", books=bookList)
     return redirect("/login")
 
@@ -41,10 +43,27 @@ def search():
 @app.route("/book/<int:id>")
 def bookPage(id=None):
     book = db.execute("SELECT * FROM books WHERE id=:id", {"id": id}).fetchone()
+    isbn = db.execute("SELECT * FROM books WHERE id=:id", {"id": id}).fetchall()
     comments = db.execute("SELECT * FROM reviews WHERE book_id=:id", {"id": id}).fetchall()
-    if db.execute("SELECT * FROM reviews WHERE user_id=:user_id AND book_id=:id", {"user_id": session["user_id"], "id": id}).rowcount == 1:
-        reviewError = 1
-    return render_template("book.html", book=book, comments=comments, id=id, error=error, reviewError=reviewError)
+    print(book)
+    for i in isbn:
+        isbn = i.isbn
+    res = requests.get("https://www.goodreads.com/book/review_counts.json",
+                params={"isbns": isbn, "key": key})
+    if res.status_code != 200:
+        average_score = db.execute("SELECT AVG(rating) FROM reviews WHERE book_id=:id", {"id": id}).fetchone()
+        rating_count = db.execute("SELECT COUNT(*) FROM reviews WHERE book_id=:id", {"id": id}).fetchone()
+    else:
+        data = res.json()
+        books = data["books"]
+        average_score = data["books"][0]["average_rating"]
+        print(f"res: {average_score}")
+        rating_count = data["books"][0]["ratings_count"]
+    print(f"AS: {average_score}, RC: {rating_count}")
+    hasReviewed = db.execute("SELECT * FROM reviews WHERE user_id=:user_id AND book_id=:id", 
+                        {"user_id": session["user_id"], "id": id}).rowcount == 1
+    return render_template("book.html", book=book, comments=comments, id=id, error=error, hasReviewed=hasReviewed,
+    average_score=average_score, rating_count=rating_count)
 
 @app.route("/review", methods=["POST"])
 def review():
@@ -58,7 +77,8 @@ def review():
         error = "Please rate the book in order to post your review."
         return redirect(f"/book/{book_id}")
     try:
-        db.execute("INSERT INTO reviews (score, title, text_review, user_id, book_id) VALUES (:rating, :title, :text_review, :user_id, :book_id)",
+        db.execute(
+        "INSERT INTO reviews (score, title, text_review, user_id, book_id) VALUES (:rating, :title, :text_review, :user_id, :book_id)",
                 {"rating": rating, "title": title, "text_review": text_review, "user_id": user_id, "book_id": book_id,})
         db.commit()
     except SQLAlchemyError as e:
@@ -119,3 +139,30 @@ def login():
 def logout():
     session.clear()
     return redirect("/login")
+
+@app.route("/api/<isbn>")
+def api(isbn=None):
+    books = db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn": isbn}).fetchall()
+    for book in books:
+        title = book.title
+        author = book.author
+        year = book.year
+        isbn = book.isbn
+    res = requests.get("https://www.goodreads.com/book/review_counts.json",
+                params={"isbns": isbn, "key": key})
+    # if books is None:
+    if res.status_code != 200:
+        # raise Exception("ERROR: API request unsuccessful")
+        return jsonify({"error": "ISBN not found"})
+    data = res.json()
+    print(f"data: {data}")
+    average_score = data["books"][0]["average_rating"]
+    rating_count = data["books"][0]["ratings_count"]
+    return jsonify({
+        "title": title,
+        "author": author,
+        "publishing_year": year,
+        "isbn": isbn,
+        "rating_count": rating_count,
+        "average_score": average_score
+    })
