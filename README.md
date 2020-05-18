@@ -8,8 +8,22 @@ Web Programming with Python and JavaScript
 ```
 DATABASE_URL=postgres://srnwovmyccfpnj:37640f4bf3c4b28f2b3ee99fbbb1d9ffe72cd04a203a8ba98c9ea44520dcf691@ec2-52-6-143-153.compute-1.amazonaws.com:5432/daus1tm2bsv6d2 FLASK_APP=src/application.py FLASK_ENV=development flask run
 ```
+### 1.0 setting up some basic files
+- application.py
+    > where the application will run
+- templates/layout.hmtl
+    > layout of the templates
+    > template inheritance
+- templates/index.html
+    > starting/ default page
+- templates/login.html
+    > page for logging in
+- templates/register.html
+    > page to register if user doesen't have an account
 
-
+### 2.0 basic back-end set up
+- setting up application.py
+    >
 
 
 ## TO DO
@@ -44,7 +58,7 @@ DATABASE_URL=postgres://srnwovmyccfpnj:37640f4bf3c4b28f2b3ee99fbbb1d9ffe72cd04a2
     - [x] **A TEXT COMPONENT FOR AN OPINION**
     - [x] **USERS SHOULD NOT BE ABLE TO SUBMIT MULTIPLE REVIEWS**
 * [x] **THE BOOK PAGE ALSO DISPLAYS THE AVAILABLE AVERAGE RATING AND NUMBER OF RATINGS FROM GOODREADS**
-* [ ] BUILD A ``/api/<isbn>`` WHERE <isbn> IS THE ISBN OF THE BOOK RESULTING IN A JSON WITH
+* [ ] **BUILD A ``/api/<isbn>`` WHERE <isbn> IS THE ISBN OF THE BOOK RESULTING IN A JSON WITH**
     - [x] **THE TITLE**
     - [x] **THE AUTHOR**
     - [x] **THE PUBLISHING YEAR**
