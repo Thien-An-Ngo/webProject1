@@ -23,7 +23,32 @@ DATABASE_URL=postgres://srnwovmyccfpnj:37640f4bf3c4b28f2b3ee99fbbb1d9ffe72cd04a2
 
 ### 2.0 basic back-end set up
 - setting up application.py
-    >
+    > importing all necessary libaries etc. and setting the app up
+
+```
+import os
+import requests
+
+from flask import Flask, session, render_template, request, redirect, jsonify
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.exc import SQLAlchemyError
+
+app = Flask(__name__)
+
+# Check for environment variable
+if not os.getenv("DATABASE_URL"):
+    raise RuntimeError("DATABASE_URL is not set")
+
+# Configure session to use filesystem
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+app.config["SECRET_KEY"] = "123456789abcdefghi"
+
+# Set up database
+engine = create_engine(os.getenv("DATABASE_URL"))
+db = scoped_session(sessionmaker(bind=engine))
+```
 
 
 ## TO DO
